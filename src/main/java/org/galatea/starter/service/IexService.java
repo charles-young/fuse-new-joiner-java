@@ -1,6 +1,7 @@
 package org.galatea.starter.service;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -44,6 +45,4 @@ public class IexService {
       return iexClient.getLastTradedPriceForSymbols(symbols.toArray(new String[0]));
     }
   }
-
-
 }
