@@ -1,11 +1,11 @@
 package org.galatea.starter.service;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.galatea.starter.domain.IexHistoricalPrice;
 import org.galatea.starter.domain.IexLastTradedPrice;
 import org.galatea.starter.domain.IexSymbol;
 import org.springframework.stereotype.Service;
@@ -43,6 +43,26 @@ public class IexService {
       return Collections.emptyList();
     } else {
       return iexClient.getLastTradedPriceForSymbols(symbols.toArray(new String[0]));
+    }
+  }
+
+  /**
+   * Get adjusted historical price data of a symbol for up to 15 years
+   *
+   * @param symbol symbol to get historical data
+   * @param range range to get price data (max, 5y, 2y, 1y, ytd, 6m, 3m, 1m, 1mm, 5d, 5dm, dynamic)
+   * @param token access token for API
+   * @return a list of historic symbol price objects for date or date range.
+   */
+  public List<IexHistoricalPrice> getHistoricalPriceForSymbol(String symbol, String date, String range, String token) {
+    if (symbol.isEmpty()) {
+      return Collections.emptyList();
+    } else {
+      if ("date".equals(range)) {
+        return iexClient.getHistoricalPriceForSymbol(symbol, date, range, token);
+      } else {
+        return iexClient.getHistoricalPriceForSymbol(symbol, range, token);
+      }
     }
   }
 }

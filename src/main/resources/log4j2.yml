@@ -125,15 +125,9 @@ Configuration:
     Async:
       - name: AsyncAppender
         bufferSize: 50000
-        AppenderRef:
-          - ref: RollingFileAppender
-          - ref: WarnRollingFileAppender
-          - ref: ErrorRollingFileAppender        
             
       - name: AsyncRestRequestAppender
         bufferSize: 50000
-        AppenderRef:
-          - ref: RestRequestRollingFileAppender
           
   Loggers:
     # Define some defaults
