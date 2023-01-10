@@ -51,18 +51,21 @@ public class IexService {
    *
    * @param symbol symbol to get historical data
    * @param range range to get price data (max, 5y, 2y, 1y, ytd, 6m, 3m, 1m, 1mm, 5d, 5dm, dynamic)
-   * @param token access token for API
    * @return a list of historic symbol price objects for date or date range.
    */
-  public List<IexHistoricalPrice> getHistoricalPriceForSymbol(String symbol, String date, String range, String token) {
+  public List<IexHistoricalPrice> getHistoricalPriceForRange(final String symbol, final String range) {
     if (symbol.isEmpty()) {
       return Collections.emptyList();
     } else {
-      if ("date".equals(range)) {
-        return iexClient.getHistoricalPriceForSymbol(symbol, date, range, token);
-      } else {
-        return iexClient.getHistoricalPriceForSymbol(symbol, range, token);
-      }
+      return iexClient.getHistoricalPriceForRange(symbol, range);
+    }
+  }
+
+  public List<IexHistoricalPrice> getHistoricalPriceForDate(final String symbol, final String date) {
+    if (symbol.isEmpty()) {
+      return Collections.emptyList();
+    } else {
+      return iexClient.getHistoricalPriceForDate(symbol, date);
     }
   }
 }

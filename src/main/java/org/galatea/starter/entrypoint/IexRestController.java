@@ -54,7 +54,6 @@ public class IexRestController {
    * @param symbol symbol to get historical data
    * @param date (optional) date to get price data (YYYYMMDD)
    * @param range (optional) range to get price data (max, 5y, 2y, 1y, ytd, 6m, 3m, 1m, 1mm, 5d, 5dm, date, dynamic)
-   * @param token access token for API
    * @return a list of historic symbol price objects for date or date range.
    */
   @GetMapping(value = "${mvc.iex.getHistoricalPricesPath}", produces = {
@@ -62,10 +61,13 @@ public class IexRestController {
   })
   public List<IexHistoricalPrice> getHistoricalPrices(
           @RequestParam(value = "symbol") final String symbol,
-          @RequestParam(value = "date", required = false) final String date,
           @RequestParam(value = "range", required = false) final String range,
-          @RequestParam(value = "token") final String token
+          @RequestParam(value = "date", required = false) final String date
           ) {
-    return iexService.getHistoricalPriceForSymbol(symbol, date, range, token);
+    if ("date".equals(range)) {
+      return iexService.getHistoricalPriceForDate(symbol, date);
+    } else {
+      return iexService.getHistoricalPriceForRange(symbol, range);
+    }
   }
 }

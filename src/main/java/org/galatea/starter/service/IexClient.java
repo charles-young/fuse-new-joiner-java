@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @FeignClient(name = "IEX", url = "${spring.rest.iexBasePath}")
 public interface IexClient {
+  String iexToken = "${spring.rest.iexToken}";
 
   /**
    * Get a list of all stocks supported by IEX. See https://iextrading.com/developer/docs/#symbols.
@@ -35,14 +36,11 @@ public interface IexClient {
   @GetMapping("/tops/last")
   List<IexLastTradedPrice> getLastTradedPriceForSymbols(@RequestParam("symbols") String[] symbols);
 
-  @GetMapping("/stock/{symbol}/chart/{range}?token={token}")
-  List<IexHistoricalPrice> getHistoricalPriceForSymbol(@PathVariable(value = "symbol") String symbol,
-                                                       @PathVariable(value = "range") String range,
-                                                       @PathVariable(value = "token") String token);
+  @GetMapping(path = "/stock/{symbol}/chart/{range}?token=${spring.rest.iexToken}", params = {"symbol", "range"})
+  List<IexHistoricalPrice> getHistoricalPriceForRange(@PathVariable(value = "symbol") String symbol,
+                                                       @PathVariable(value = "range") String range);
 
-  @GetMapping("/stock/{symbol}/chart/{range}/{date}?token={token}")
-  List<IexHistoricalPrice> getHistoricalPriceForSymbol(@PathVariable(value = "symbol") String symbol,
-                                                       @PathVariable(value = "date") String date,
-                                                       @PathVariable(value = "range") String range,
-                                                       @PathVariable(value = "token") String token);
+  @GetMapping(path = "/stock/{symbol}/chart/date/{date}?chartByDay=true&token=${spring.rest.iexToken}", params = {"symbol", "date"})
+  List<IexHistoricalPrice> getHistoricalPriceForDate(@PathVariable(value = "symbol") String symbol,
+                                                       @PathVariable(value = "date") String date);
 }

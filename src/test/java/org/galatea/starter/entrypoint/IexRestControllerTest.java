@@ -81,4 +81,42 @@ public class IexRestControllerTest extends ASpringTest {
         .andExpect(jsonPath("$", is(Collections.emptyList())))
         .andReturn();
   }
+  @Test
+  public void testGetHistoricalPriceRange() throws Exception {
+
+    MvcResult result = this.mvc.perform(
+        org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+            .get("/iex/historicalPrices?symbol=twtr&range=2d")
+            .accept(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].symbol", is("TWTR")))
+        .andExpect(jsonPath("$[0].close", is(24.25)))
+        .andExpect(jsonPath("$[0].high", is(24.42)))
+        .andExpect(jsonPath("$[0].low", is(23.76)))
+        .andExpect(jsonPath("$[0].open", is(24)))
+        .andExpect(jsonPath("$[0].volume", is(10420723)))
+        .andExpect(jsonPath("$[1].symbol", is("TWTR")))
+        .andExpect(jsonPath("$[1].close", is(24.35)))
+        .andExpect(jsonPath("$[1].high", is(24.37)))
+        .andExpect(jsonPath("$[1].low", is(23.9)))
+        .andExpect(jsonPath("$[1].open", is(24.3)))
+        .andExpect(jsonPath("$[1].volume", is(11670398)))
+        .andReturn();
+  }
+  @Test
+  public void testGetHistoricalPriceDate() throws Exception {
+
+    MvcResult result = this.mvc.perform(
+        org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+            .get("/iex/historicalPrices?symbol=twtr&date=20230101")
+            .accept(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$[0].symbol", is("TWTR")))
+        .andExpect(jsonPath("$[0].close", is(24.25)))
+        .andExpect(jsonPath("$[0].high", is(24.42)))
+        .andExpect(jsonPath("$[0].low", is(23.76)))
+        .andExpect(jsonPath("$[0].open", is(24)))
+        .andExpect(jsonPath("$[0].volume", is(10420723)))
+        .andReturn();
+  }
 }
